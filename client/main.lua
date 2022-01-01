@@ -47,7 +47,7 @@ end
 
 local utf8 = require("utf8")
 love.keypressed = function(key)
-  if key == "backspace" then -- Simple utf8 backspace taken from the love wiki
+  if key == "backspace" then -- Simple utf8 backspace func taken from the love wiki
     local byteoffset = utf8.offset(text, -1)
     if byteoffset then
       text = text:sub(1, byteoffset-1)
