@@ -2,7 +2,7 @@ local enet = require("enet")
 local address, port = "*", 12345
 local host = enet.host_create(address..":"..tostring(port))
 
-local success = host:service(5000) -- Start server connection
+local success = host:service(5000) -- Start server connection, 5sec timeout
 if not success then -- may fail to start if port is already in use
   host = nil
   love.draw = function() love.graphics.print("Could not start server on port "..port) end
@@ -10,7 +10,7 @@ end
 
 love.update = function()
   if host then
-    local event = host:service(3) -- 3ms timeout, just put it higher in a thread
+    local event = host:service(3) -- 3ms timeout, recommended to put it higher in a thread
     local count, limit = 0, 50 -- Since it isn't threaded, make sure it exits update after a reasonable number of cycles 
     while event and count < limit do -- (love.event funcs in love.run still needs to run for server)
       if event.type == "receive" then

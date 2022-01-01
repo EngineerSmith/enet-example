@@ -1,13 +1,13 @@
 local enet = require("enet")
 local address, port = "localhost", 12345
 local host = enet.host_create()
-local server = host:connect(address..":"..tostring(port))
+local server = host:connect(address..":"..tostring(port)) -- Connects on the next :service call
 
-local messages = {}
+local messages = {} -- table to hold all our returned messages from the server
 
-local success = host:service(1000) -- sends connection to server, 1000ms timeout
-if not success then
-  table.insert(messages, "Could not connect to server")
+local success = host:service(5000) -- sends connection to server, 5sec timeout
+if not success then -- failed to reach server
+  table.insert(messages, "Could not connect to server at "..address..":"..port)
   host = nil
 end
 
@@ -19,7 +19,7 @@ love.update = function()
       if event.type == "receive" then
         table.insert(messages, event.data)
       elseif event.type == "disconnect" then
-        if event.peer == server then
+        if event.peer == server then -- This should always be true due to the next statement about inbound connections
           table.insert(messages, "Disconnected: "..event.data)
         end
       elseif event.type == "connect" then
@@ -33,7 +33,7 @@ love.update = function()
   end
 end
 
-local text = ""
+local text = "" -- holds current unsent message
 
 local lg = love.graphics
 love.draw = function()
@@ -47,16 +47,16 @@ end
 
 local utf8 = require("utf8")
 love.keypressed = function(key)
-  if key == "backspace" then
+  if key == "backspace" then -- Simple utf8 backspace taken from the love wiki
     local byteoffset = utf8.offset(text, -1)
     if byteoffset then
       text = text:sub(1, byteoffset-1)
     end
   elseif key == "return" then
     if text == "disconnect" then
-      server:disconnect()
+      server:disconnect() -- If "disconnect" is typed and return has been pressed disconnect from the server
     else
-      server:send(text)
+      server:send(text) -- otherwise send the current message
       text = ""
     end
   end
