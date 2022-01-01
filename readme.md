@@ -9,7 +9,7 @@ You can run either of the bat files or the shell scripts provided. Run the serve
 # Server
 **NOTE**, this code can be access through the network (E.g. LAN/WAN (web)) if port `12345` is open. You can change this behaviour to run **only** on localhost if you change the address variable within the server's `main.lua` to `localhost` or `127.0.0.1` from the original value of `*`
 ## How does the sever work?
-The server is where the magic of networking starts. First with ENet you must create a host.
+The server is where the magic of networking starts. First with ENet you must create a [host](https://love2d.org/wiki/enet.host).
 ```lua
 local host = enet.host_create(address..":"..port)
 ``` 
@@ -23,7 +23,7 @@ Lastly we get to the main loop of the server.
 ```lua
 local event = host:service(50) -- 50ms timeout
 while event do
-  log("Event received. Type: "..event.type..", from:"..tostring(event.client).." containing": "..tostring(event.data))
+  log("Event received. Type: "..event.type..", from:"..tostring(event.client).." containing: "..tostring(event.data))
   event = host:service() -- get next event in queue
 end
 ```
@@ -33,6 +33,8 @@ There are 3 types of events, the table below contains what variables are availab
 | "receive" | peer | string |
 | "disconnect" | peer | number |
 | "connect" | peer | number |
+
+Messages are sent between server to client using peer objects that can be found within events from the `event.peer` variable. Peers have many more functions that you access that can be read about on [love's wiki](https://love2d.org/wiki/enet.peer).
 # Client
 The client contains about the same amount of code as the server does - it has a few extra functions to capture and send messages however.
 
@@ -51,4 +53,5 @@ In the client example you can see the chat program sending the message within th
 
 # Cannot connect to server?
 If you cannot connect to the machine - but can ping it using the ping command in a terminal using the same ip address. Then usually the issue lies with the client or server's firewall blocking the connection. Ensure that love.exe has access through the firewall (If you fuse your game, then that program must also be let through). 
+
 If you're using a private IP that worked one day but doesn't anymore - check that machine still has the same one as router usually refresh the connected devices IPs every 24 hours or so by default.
