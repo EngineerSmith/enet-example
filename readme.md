@@ -34,7 +34,7 @@ There are 3 types of events, the table below contains what variables are availab
 | "disconnect" | peer | number |
 | "connect" | peer | number |
 
-Messages are sent between server to client using peer objects that can be found within events from the `event.peer` variable. Peers have many more functions that you access that can be read about on [love's wiki](https://love2d.org/wiki/enet.peer).
+Messages are sent between server to client using peer objects that can be found within events from the `event.peer` variable. Peers have many more functions that you access that can be read about on [love's wiki](https://love2d.org/wiki/enet.peer). **NOTE**, to find a peer's connected ip and port you have to use `tostring(peer)` - it isn't documented on love's wiki.
 # Client
 The client contains about the same amount of code as the server does - it has a few extra functions to capture and send messages however.
 
