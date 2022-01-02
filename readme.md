@@ -24,8 +24,8 @@ Lastly we get to the main loop of the server.
 local event = host:service(50) -- 50ms timeout
 while event do
   log("Event received. Type: "..event.type..", from:"..tostring(event.client).." containing: "..tostring(event.data))
-  event = host:service() -- get next event in queue
-end
+  event = host:check_events() -- get next event in queue
+end -- will exit once the event queue has been emptied
 ```
 There are 3 types of events, the table below contains what variables are available and their type. You can learn more from [love own wiki](https://love2d.org/wiki/enet.event).
 | event.type | event.peer | event.data |
