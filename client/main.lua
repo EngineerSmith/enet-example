@@ -27,7 +27,7 @@ love.update = function()
           event.peer:disconnect_now() -- Don't want other clients connecting to this client
         end
       end
-      event = host:service() -- receive any waiting messages
+      event = host:check_events() -- receive any waiting messages
       count = count + 1
     end
   end

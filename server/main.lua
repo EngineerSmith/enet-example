@@ -21,7 +21,7 @@ love.update = function()
       elseif event.type == "disconnect" then
         host:broadcast(tostring(event.peer).." has left the server!") -- Tell everyone someone has left
       end
-      event = host:service() -- get the next event in queue - no waiting
+      event = host:check_events() -- get the next event in queue - no waiting
       count = count + 1
     end
   end
