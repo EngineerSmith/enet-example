@@ -1,6 +1,6 @@
 local enet = require("enet")
 local address, port = "localhost", 12345
-local host = enet.host_create()
+local host = enet.host_create(nil, 1) -- Tell the client it can only have 1 peer, the server to ensure nobody else tries to connect
 local server = host:connect(address..":"..tostring(port)) -- Connects on the next :service call
 
 local messages = {} -- table to hold all our returned messages from the server

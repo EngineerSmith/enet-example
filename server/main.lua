@@ -6,6 +6,8 @@ local success = host:service(5000) -- Start server connection, 5sec timeout
 if not success then -- may fail to start if port is already in use
   host = nil
   love.draw = function() love.graphics.print("Could not start server on port "..port) end
+else
+  love.draw = function() love.graphics.print("Server is running on port "..port) end
 end
 
 love.update = function()
