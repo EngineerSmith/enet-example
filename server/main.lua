@@ -2,9 +2,7 @@ local enet = require("enet")
 local address, port = "*", 12345
 local host = enet.host_create(address..":"..tostring(port))
 
-local success = host:service(5000) -- Start server connection, 5sec timeout
-if not success then -- may fail to start if port is already in use
-  host = nil
+if not host then -- may fail to start if port is already in use
   love.draw = function() love.graphics.print("Could not start server on port "..port) end
 else
   love.draw = function() love.graphics.print("Server is running on port "..port) end
