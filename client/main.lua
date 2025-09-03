@@ -15,7 +15,7 @@ love.update = function()
   if host then
     local event = host:service(3) -- 3ms timeout, just put it higher in a thread
     local count, limit = 0, 50 -- Since it isn't threaded, make sure it exits update
-    while event and count < limit do
+    while event do
       if event.type == "receive" then
         table.insert(messages, event.data)
       elseif event.type == "disconnect" then
@@ -27,8 +27,11 @@ love.update = function()
           event.peer:disconnect_now() -- Don't want other clients connecting to this client
         end
       end
-      event = host:check_events() -- receive any waiting messages
       count = count + 1
+      if count < limit then
+        break
+      end
+      event = host:check_events() -- receive any waiting messages
     end
   end
 end
@@ -60,4 +63,5 @@ love.keypressed = function(key)
       text = ""
     end
   end
+
 end
